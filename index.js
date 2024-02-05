@@ -2,8 +2,20 @@ const express = require("express");
 const morgan = require("morgan");
 
 const app = express();
+
+// creating custom morgan logger message for http requests
+// morgan.token("type", function (req, res) {
+//   return req.headers["content-type"];
+// });
+
+morgan.token("body", (req) => {
+  return JSON.stringify(req.body);
+});
+
 app.use(express.json());
-app.use(morgan("tiny"));
+app.use(
+  morgan(`:method :url :status :res[content-length] - :response-time ms :body`)
+);
 
 let persons = [
   {
@@ -40,7 +52,6 @@ app.get("/api/persons", (request, response) => {
 
 app.get("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id);
-  console.log(id);
 
   const person = persons.find((person) => person.id === id);
 
@@ -56,7 +67,6 @@ app.delete("/api/persons/:id", (request, response) => {
 
   persons = persons.filter((person) => person.id !== id);
 
-  console.log(persons);
   response.status(204).end();
 });
 
@@ -66,8 +76,6 @@ app.post("/api/persons", (request, response) => {
   const person = request.body;
 
   person.id = maxId + 1;
-
-  console.log(person);
 
   // if the name or number is missing, send an error message
   if (person.name && person.number) {
