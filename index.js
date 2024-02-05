@@ -67,9 +67,19 @@ app.post("/api/persons", (request, response) => {
 
   console.log(person);
 
-  persons = persons.concat(person);
+  // if the name or number is missing, send an error message
+  if (person.name && person.number) {
+    const duplicate = persons.find((n) => n.name === person.name);
 
-  response.json(person);
+    if (duplicate) {
+      response.status(404).send("name already exists in the phonebook");
+    } else {
+      persons = persons.concat(person);
+      response.json(person);
+    }
+  } else {
+    response.status(404).send("you did not specify a name or a number");
+  }
 });
 
 const PORT = 3001;
