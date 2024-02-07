@@ -1,7 +1,7 @@
-POST http://localhost:3001/api/persons
+POST https://helsinki-part3.fly.dev/api/persons
 Content-Type: application/json
 
 {
-  "name": "Nancy",
+  "name": "Sean Jin",
   "number": "1234-000-001"
 }

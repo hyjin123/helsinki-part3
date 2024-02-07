@@ -4,9 +4,6 @@ const morgan = require("morgan");
 const app = express();
 
 // creating custom morgan logger message for http requests
-// morgan.token("type", function (req, res) {
-//   return req.headers["content-type"];
-// });
 
 morgan.token("body", (req) => {
   return JSON.stringify(req.body);
@@ -92,7 +89,7 @@ app.post("/api/persons", (request, response) => {
   }
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
