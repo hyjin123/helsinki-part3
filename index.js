@@ -56,12 +56,20 @@ app.get("/api/persons", (request, response) => {
 });
 
 // Fetching individual person's information
-app.get("/api/persons/:id", (request, response) => {
+app.get("/api/persons/:id", (request, response, next) => {
   const id = request.params.id;
 
-  Person.findById(id).then((person) => {
-    response.json(person);
-  });
+  Person.findById(id)
+    .then((person) => {
+      if (person) {
+        response.json(person);
+      } else {
+        response.status(404).end();
+      }
+    })
+    .catch((error) => {
+      next(error);
+    });
 
   // const id = Number(request.params.id);
 
@@ -123,6 +131,27 @@ app.post("/api/persons", (request, response) => {
   //   response.status(404).send("you did not specify a name or a number");
   // }
 });
+
+// These two middleware must come at the end of the code after all HTTP request handlers
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
+};
+
+// handler of requests with unknown endpoint
+app.use(unknownEndpoint);
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
+  }
+
+  next(error);
+};
+
+// this has to be the last loaded middleware.
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
