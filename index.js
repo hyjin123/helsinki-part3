@@ -76,7 +76,13 @@ app.get("/api/persons/:id", (request, response) => {
 
 // Deleting a person from the phonebook
 app.delete("/api/persons/:id", (request, response) => {
-  const id = Number(request.params.id);
+  const id = request.params.id;
+
+  Person.findByIdAndDelete(id)
+    .then((result) => {
+      response.status(204).end();
+    })
+    .catch((error) => next(error));
 
   persons = persons.filter((person) => person.id !== id);
 
@@ -118,7 +124,7 @@ app.post("/api/persons", (request, response) => {
   // }
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
