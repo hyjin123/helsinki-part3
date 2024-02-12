@@ -92,9 +92,9 @@ app.delete("/api/persons/:id", (request, response) => {
     })
     .catch((error) => next(error));
 
-  persons = persons.filter((person) => person.id !== id);
+  // persons = persons.filter((person) => person.id !== id);
 
-  response.status(204).end();
+  // response.status(204).end();
 });
 
 // Adding a person to the phonebook
@@ -130,6 +130,33 @@ app.post("/api/persons", (request, response) => {
   // } else {
   //   response.status(404).send("you did not specify a name or a number");
   // }
+});
+
+// Updating a person to the phonebook
+app.put("/api/persons/:id", (request, response) => {
+  const body = request.body;
+  const id = request.params.id;
+
+  const person = {
+    name: body.name,
+    number: body.number,
+  };
+
+  Person.findByIdAndUpdate(id, person, { new: true })
+    .then((updatedPerson) => {
+      response.json(updatedPerson);
+    })
+    .catch((error) => next(error));
+
+  // if (body.name === undefined) {
+  //   return response.status(400).json({ error: "name is missing" });
+  // }
+
+  // const person = new Person({ name: body.name, number: body.number });
+
+  // person.save().then((result) => {
+  //   response.json(result);
+  // });
 });
 
 // These two middleware must come at the end of the code after all HTTP request handlers
