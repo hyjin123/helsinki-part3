@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for helsinki-part3 on 2024-02-21T12:15:18-05:00
+# fly.toml app configuration file generated for helsinki-part3 on 2024-02-24T13:14:51-05:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -9,16 +9,16 @@ primary_region = 'yyz'
 [build]
 
 [env]
-  PORT = "3001" # add this
-  HOSTNAME = "0.0.0.0"
+  HOSTNAME = '0.0.0.0'
+  PORT = '3001'
 
 [http_service]
-  internal_port = 3001 # ensure that this is same as PORT
+  internal_port = 3001
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true
   min_machines_running = 0
-  processes = ["app"]
+  processes = ['app']
 
 [[vm]]
   memory = '1gb'

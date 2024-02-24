@@ -1,11 +1,11 @@
-require("dotenv").config();
 const express = require("express");
+const app = express();
+
+require("dotenv").config();
+
 const morgan = require("morgan");
 const cors = require("cors");
 const Person = require("./models/person");
-
-const app = express();
-
 // creating custom morgan logger message for http requests
 
 morgan.token("body", (req) => {
@@ -188,7 +188,8 @@ const errorHandler = (error, request, response, next) => {
 
 // this has to be the last loaded middleware.
 app.use(errorHandler);
-const PORT = process.env.PORT || 3001;
+
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
