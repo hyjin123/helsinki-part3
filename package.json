@@ -10,7 +10,8 @@
     "build:ui": "rm -rf dist && cd ../helsinki-part2/phonebook && npm run build && cp -r dist ../../helsinki-part3",
     "deploy": "flyctl deploy",
     "deploy:full": "npm run build:ui && npm run deploy",
-    "logs:prod": "flyctl logs"
+    "logs:prod": "flyctl logs",
+    "lint": "eslint ."
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +24,8 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "@stylistic/eslint-plugin-js": "^1.6.2",
+    "eslint": "^8.57.0",
     "nodemon": "^3.0.3"
   }
 }
